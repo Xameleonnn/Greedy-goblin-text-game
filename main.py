@@ -31,6 +31,7 @@ def get_game_rules():
           'because of extreme greed that you possess. '
           '3 - Some items can be part of a collection. Gather items from '
           'one collection to get more value points at final scoring. '
+          '4 - No backtracking. '
           )
 
 def put_in_bag(item):
@@ -59,11 +60,13 @@ def display_item_props(loot):
     
     Returns: None
     '''
+    counter = 0
     for element in loot:
+        counter += 1
         item_name = element.get_item_name()
         item_value = element.get_value()
         item_weight = element.get_weight()
-        print("Item's name is", item_name + ', ', 
+        print(counter,')', item_name + ', ', 
               "it's value is", item_value, ', ', 
               "it's weight is", item_weight, '.')
     
@@ -82,7 +85,7 @@ def get_current_weight(bag):
     
     return resulting_weight
 
-def process_next_move():
+def get_next_move():
     '''
     Function asks for the next move. A player can choose his path through input, check 
     his inventory (which is bag[items]), check for his load and learn about gamerules.
@@ -128,7 +131,76 @@ def process_next_move():
             
         else:
             print('Unexpected outcome, lets try again.')
+
+def play_location(location):
+    '''
+    Function plays the location for player.
     
+    Parameters: location - objects of type Location
+    
+    Returns: None
+    '''
+    if location != start_l0:  
+        print(location.get_text_before_loot())
+        loot = location.get_items()
+        display_item_props(loot)
+        player_item_pick = int(input('Which item do you choose? (1, 2, 3): '))
+        put_in_bag(loot.pop(player_item_pick-1))
+        print('===================================================')
+        print(location.get_text_after_loot())
+    
+    else:
+        print('You see an entrance in a cave on your left and a small dilapidated '
+              'cabin on your right.')
+    
+def go_next_location(location, player_pick):
+    '''
+    Function takes player pick ('r'/'l') and current location,
+    then it navigate player correctly to the next location.
+    
+    Parameters: location - object of type Location
+                player pick - string
+    
+    Returns: object - type Location
+    '''
+    next_location_level = location.get_level() + 1
+    current_position = location.get_position()
+   
+    
+    
+    if current_position == 'l' and player_pick == 'l':
+        adjusted_player_pick = 'l'
+    elif current_position == 'm' and player_pick == 'l':
+        adjusted_player_pick = 'l'
+    elif current_position == 'r' and player_pick == 'l':
+        adjusted_player_pick = 'm'
+    elif current_position == 'l' and player_pick == 'r':
+        adjusted_player_pick = 'm'
+    elif current_position == 'm' and player_pick == 'r':
+        adjusted_player_pick = 'r'
+    else:
+        adjusted_player_pick = 'r'
+    
+    if location.get_level() == 4: # level 5 is only middle, so NoneType errors will occur if we step in direction other then 'm'
+        adjusted_player_pick = 'm'
+    
+    if location.get_level() == 8: # same as above
+        if location == catacombs_l8:
+            adjusted_player_pick = 'l'
+            
+        if location == spyder_caves_l8:
+            adjusted_player_pick = 'r'
+    
+    if location.get_level() == 9: # same as above
+        adjusted_player_pick = 'm'
+    
+    for element in list_all_locations:
+        if element.get_level() == next_location_level:
+            if element.get_position() == adjusted_player_pick:
+                return element # возвражает NoneType иногда
+ 
+# Start of the game
+
 print('I greet you, little greedy creature. '
       'You have come with nothing but an empty '
       'bag and desire to become rich. Let us begin!')
@@ -136,51 +208,35 @@ print('I greet you, little greedy creature. '
 input_name = input('What is your name? ')
 nickname = ['The filthy', "The greedy one", 
             'The little mouse', 'The doomed one', 
-            'The lost', 'The unpleasant'
-            ]
+            'The lost', 'The unpleasant']
 
 random_int = random.randint(0, 5)
 randomised_nickname = nickname.pop(random_int)
 name = input_name + ' ' + randomised_nickname
 print('From now on, you are', name + '.') # + is for dot to appear without space
 
-# Here we start a jorney
-
-print('You see an entrance in a cave on your left and a small dilapidated cabin on your right')
-player_pick = process_next_move()
-# level = 0
-
-if player_pick == 'r': # basement_l1
-    print('You enter a cabin. It is dark and empty here but you notice '
-          "a ladder, which leads into cabin's basement. You are going "
-          "down the ladder and found yourself in a mossy dump basement. "
-          "There are some items lying around. "
-          'Those are not yours, but you cannot resist your kleptomania.')
+location = start_l0
+level = location.get_level()
+game_over = False
+while game_over != True:
+    play_location(location)
+    level += 1
+    if level == 11:
+        game_over = True
+        break
     
-    loot = basement_l1.get_items()
-    display_item_props(loot)
-    player_item_pick = int(input('Which item do you choose? (1, 2, 3): '))
-    put_in_bag(loot.pop(player_item_pick-1))
+    player_pick = get_next_move()
+    location = go_next_location(location, player_pick)
+    if location.get_level == 6:
+        player_pick = input("On the half way you started to smell a little bit of "
+                            "alcohol in the air. Do you want to check the origins "
+                            "of that smell? (y/n)" )
+        
+        if player_pick == 'y':
+            location = inn_l6
     
-    print('After picking the item up, you notice a hole in a wall to the right '
-          'and a ladder deeper down to the left.')
-    player_pick = process_next_move()
-    if player_pick == 'r': # cave_l2
-        # something for cave_l2
-        pass
-else: # cave_l1
-    print("You enter a massive cave. An underground river block your way. "
-          "There are some items lying just past the entrance.")
     
-    loot = cave_l1.get_items()
-    display_item_props(loot)
-    player_item_pick = int(input('Which item do you choose? (1, 2, 3): '))
-    put_in_bag(loot.pop(player_item_pick-1))
-    print("You can cross the river to ford on the left, where it's not "
-          "so deep or you can try to cross a wooden rotten bridge on the right")
-     
-    if player_pick == 'r': # cave_l2
-        # again something for cave_l2, i need to think how not to repeat myself
+    
 
 
 
