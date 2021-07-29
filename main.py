@@ -100,27 +100,36 @@ def get_next_move():
               '2 - go left, '
               '3 - check bag for items, '
               '4 - check for current weight load, '
-              '5 - check game rules.'
-              )
-        decision = int(input('Make your choise! '))
+              '5 - check game rules.')
+        
+        decision = 0
+        while decision not in range(1,6):
+            try:
+                decision = int(input('Make your choise! '))
+                if decision not in range(1,6):
+                    print("You were not the smartest kid in the family, right? Type the correct number! (from 1 to 5): ")
+            
+            except ValueError:
+                print('A NUMBER!!! ЦИФРА!!! 数字!!!')
+            
+                
         print('===================================================')
         print('You picked', decision)
-        possible_choices = [1, 2, 3, 4, 5]
-        while decision not in possible_choices:
-            decision = int(input("You were not the smartest kid in the family, right? "
-                                 "Type the goddamn NUMBER! (from 1 to 5): ")) # Don't be shy to show some disrespect for a greedy goblin
-            print('You picked', decision)
        
         if decision == 1:
             return 'r'
+        
         elif decision == 2:
             return 'l'
+        
         elif decision == 3:
             if len(bag) == 0:
                 print('There is nothing in the bag.')
+                
             else:
                 print('Here are some precious items in your bag:')
                 display_item_props(bag)
+                
         elif decision == 4:
             print('Current weight is', get_current_weight(bag), '. ',
                   'You can take', max_weight - get_current_weight(bag),
@@ -129,8 +138,8 @@ def get_next_move():
         elif decision == 5:
             get_game_rules()
             
-        else:
-            print('Unexpected outcome, lets try again.')
+        # else:
+        #     print('Unexpected outcome, lets try again.')
 
 def play_location(location):
     '''
@@ -144,13 +153,22 @@ def play_location(location):
         print(location.get_text_before_loot())
         loot = location.get_items()
         display_item_props(loot)
-        player_item_pick = int(input('Which item do you choose? (1, 2, 3): '))
+        player_item_pick = 0
+        while player_item_pick not in range(1,4):
+            try:
+                player_item_pick = int(input('Which item do you choose? (1, 2, 3): '))
+                if player_item_pick not in range(1,4):
+                    print("Type the goddamn NUMBER! (from 1 to 3): ")
+            
+            except ValueError:
+                print('A NUMBER!!! ЦИФРА!!! 数字!!!')
+                
         put_in_bag(loot.pop(player_item_pick-1))
         print('===================================================')
         print(location.get_text_after_loot())
     
     else:
-        print('You see an entrance in a cave on your left and a small dilapidated '
+        print('You see an entrance to the cave on your left and a small dilapidated '
               'cabin on your right.')
     
 def go_next_location(location, player_pick):
@@ -197,18 +215,67 @@ def go_next_location(location, player_pick):
     for element in list_all_locations:
         if element.get_level() == next_location_level:
             if element.get_position() == adjusted_player_pick:
-                return element # возвражает NoneType иногда
- 
+                return element
+
+def get_score(bag):
+    '''
+    Function calculates overall score of items in your bag
+    
+    Parameters: bag - list
+    
+    Returns: integer
+    '''
+    overall_score = 0
+    obtained_collection_items = {'bars':0, 'scholar junk':0, 'tableware':0, 
+                                 'strange':0, 'trophy':0, 'weaponry':0}
+    for item in bag:
+        if type(item) == CollectionItem:
+            obtained_collection_items[item.get_collection()] = obtained_collection_items.get(item.get_collection()) + 1
+            
+    for item in bag:
+        item_value = item.get_value()
+        if type(item) == CollectionItem:
+            if item.get_collection() == 'bars':
+                value_multiplier_per_item = 2
+                score_for_item = item_value * value_multiplier_per_item * obtained_collection_items.get('bars')
+            elif item.get_collection() == 'scholar junk':
+                value_multiplier_per_item = 4
+                score_for_item = item_value * value_multiplier_per_item * obtained_collection_items.get('scholar junk')
+            elif item.get_collection() == 'tableware':
+                value_multiplier_per_item = 2
+                score_for_item = item_value * value_multiplier_per_item * obtained_collection_items.get('tableware')
+            elif item.get_collection() == 'trophy':
+                value_multiplier_per_item = 3
+                score_for_item = item_value * value_multiplier_per_item * obtained_collection_items.get('trophy')
+            elif item.get_collection() == 'weaponry':
+                value_multiplier_per_item = 2
+                score_for_item = item_value * value_multiplier_per_item * obtained_collection_items.get('weaponry')
+            
+            if item.get_collection() == 'strange': # all strange items have 0 value
+                item_value = 800
+                value_multiplier_per_item = 2
+                score_for_item = item_value * value_multiplier_per_item * obtained_collection_items.get('strange')
+                
+        else:
+             score_for_item = item_value
+            
+        overall_score += score_for_item
+    
+    return overall_score
+    
 # Start of the game
 
 print('I greet you, little greedy creature. '
       'You have come with nothing but an empty '
-      'bag and desire to become rich. Let us begin!')
+      'bag and a desire to become rich. Let us begin!')
 
 input_name = input('What is your name? ')
-nickname = ['The filthy', "The greedy one", 
-            'The little mouse', 'The doomed one', 
-            'The lost', 'The unpleasant']
+while input_name == '':
+    input_name = input('Lets try again. What is your name? ')
+    
+nickname = ['The Filthy', "The Greedy one", 
+            'The Little mouse', 'The Doomed one', 
+            'The Lost', 'The Unpleasant']
 
 random_int = random.randint(0, 5)
 randomised_nickname = nickname.pop(random_int)
@@ -218,21 +285,25 @@ print('From now on, you are', name + '.') # + is for dot to appear without space
 location = start_l0
 level = location.get_level()
 game_over = False
+
 while game_over != True:
     play_location(location)
     level += 1
-    if level == 11:
+    if level == 11: # Number of locations is 10
+        print(get_score(bag))
         game_over = True
         break
     
     player_pick = get_next_move()
     location = go_next_location(location, player_pick)
-    if location.get_level == 6:
+    if location.get_level() == 6:
         player_pick = input("On the half way you started to smell a little bit of "
                             "alcohol in the air. Do you want to check the origins "
-                            "of that smell? (y/n)" )
+                            "of that smell? (y/n): " )
         
         if player_pick == 'y':
+            print('===================================================')
+            print('You picked', player_pick)
             location = inn_l6
     
     
