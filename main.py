@@ -83,6 +83,7 @@ def get_current_weight(bag):
         item_weight = item.get_weight()
         resulting_weight += item_weight
     
+    
     return resulting_weight
 
 def get_next_move():
@@ -134,12 +135,14 @@ def get_next_move():
             print('Current weight is', get_current_weight(bag), '. ',
                   'You can take', max_weight - get_current_weight(bag),
                   'more points of weight')
+            if get_current_weight(bag) == 69 or max_weight - get_current_weight(bag) == 69:
+                print ("Nice!")
             
         elif decision == 5:
             get_game_rules()
             
-        # else:
-        #     print('Unexpected outcome, lets try again.')
+        else:
+            print('Unexpected outcome, lets try again.')
 
 def play_location(location):
     '''
@@ -262,7 +265,37 @@ def get_score(bag):
         overall_score += score_for_item
     
     return overall_score
+
+def get_nickname(bag):
+    '''
+    Function return a nickname depending on the value of items in bag
     
+    Parameters: bag - list with objects type Item
+    
+    Returns: string
+    '''
+    total_score = get_score(bag)
+    if total_score == 0:
+        nickname_list = ['The Filthy', "The Greedy one", 
+                    'The Little mouse', 'The Doomed one', 
+                    'The Lost', 'The Unpleasant']
+    
+    else:
+        if total_score < 5000:
+            nickname_list = ['The Broke', 'The Almsman ', 'The Beggar']
+        elif total_score in range(5000, 10000):
+            nickname_list = ['The Poor']
+        elif total_score in range(10000, 17500):
+            nickname_list = ['The Goblin of fortune', 'The Wealthy']
+        elif total_score in range(17500, 25000):
+            nickname_list = ['The Rich', 'The Moneybag']
+        else:
+            nickname_list = ['The King', 'The Richest']
+    
+    random_int = random.randint(0, len(nickname_list)-1)
+    randomised_nickname = nickname_list.pop(random_int)
+    return randomised_nickname
+
 # Start of the game
 
 print('I greet you, little greedy creature. '
@@ -273,24 +306,20 @@ input_name = input('What is your name? ')
 while input_name == '':
     input_name = input('Lets try again. What is your name? ')
     
-nickname = ['The Filthy', "The Greedy one", 
-            'The Little mouse', 'The Doomed one', 
-            'The Lost', 'The Unpleasant']
-
-random_int = random.randint(0, 5)
-randomised_nickname = nickname.pop(random_int)
-name = input_name + ' ' + randomised_nickname
+name = input_name + ' ' + get_nickname(bag)
 print('From now on, you are', name + '.') # + is for dot to appear without space
-
 location = start_l0
 level = location.get_level()
 game_over = False
-
 while game_over != True:
     play_location(location)
     level += 1
-    if level == 11: # Number of locations is 10
-        print(get_score(bag))
+    if level == 11: # Number of the last locations is 10
+        total_score = get_score(bag)
+        name = input_name + ' ' + get_nickname(bag)
+        print("It was a long jorney, but you have reached the end. Total value of your items is:", total_score)
+        print("From now on, you are known as", name)
+        input('Good luck and thanks for playing! (type anything to exit)')
         game_over = True
         break
     

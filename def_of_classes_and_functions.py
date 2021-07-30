@@ -100,7 +100,7 @@ def get_len_of_all_text(list_all_locations):
 
 
 # Items for lvl 1 locations
-glass_bottle = Item('A botte', 2, 1, 1)
+glass_bottle = Item('A bottle', 2, 1, 1)
 brick = CollectionItem('A brick', 5, 3, 1, 'bars')
 blank_scroll = CollectionItem('A blank scroll', 1, 0, 1, 'scholar junk')
 
@@ -221,7 +221,7 @@ list_all_locations = [start_l0, cave_l1, basement_l1, flooded_cave_l2, cave_l2, 
 cave_l1_text_before_loot = ("You enter a massive cave. An underground river block your way. "
                             "There are some items lying just past the entrance.")
 
-cave_l1_text_after_loot = ("You can cross the river to ford on the left, where it's not so "
+cave_l1_text_after_loot = ("You can ford the river on the left, where it's not so "
                            "deep or you can try to cross a wooden rotten bridge on the right")
 
 basement_l1_text_before_loot = ("You enter a cabin. It is dark and empty here but you notice "
@@ -251,15 +251,12 @@ flooded_cave_l2_text_after_loot = ("You spot a little entrance in a deeper level
                                    "engraved on the wall next to entrance. On the other hand, you can "
                                    "go to the left to explore shallow waters of lower caves.")
 
-# ПРоебан текст, после выхода из бейзмента я почему то чтото с мостом делаю ================================================
-
-cave_l2_text_before_loot = ("Although the bridge was screaming udred your weight, you successfully "
-                            "got to the other side. That cave is indeed a huge one! You quickly "
+cave_l2_text_before_loot = ("That cave is indeed a huge one! You quickly "
                             "spotted a couple of items next to a skeleton of a human. It seems "
                             "like poor soul fell from height and was impaled on a stalagmite. "
                             "Or someone helped him get impaled...")
 
-cave_l2_text_after_loot = ("After grabbing an item, you carefully plan where to go next. You can turn "
+cave_l2_text_after_loot = ("After grabbing the item, you carefully plan where to go next. You can turn "
                            "to the left and dive deep in lover caves. But on your right there is an "
                            "entrance with a bull head above it. You wonder what it has to do with "
                            "the place?")
@@ -283,11 +280,11 @@ basement_l2.set_text_after_loot(basement_l2_text_after_loot)
 # Location lvl 3
 flooded_cave_l3_text_before_loot = ("It was 3 or maybe more hours of constant descending lower. Little stream at the "
                                     "start of a tunnel became a full underground river. Finally, you found yourself "
-                                    "in a huge open space. Just before you is a lake... no, a whole underground sea! "
+                                    "in a huge open space. You see a lake... no, a whole underground sea ahead of yourself! "
                                     "The water here is extremely transparent. You came closer to the shore and found "
                                     "a couple items here!")
 
-flooded_cave_l3_text_after_loot = ("While grabbing an item, you spotted a boat! You quickly jumped inside and started "
+flooded_cave_l3_text_after_loot = ("While grabbing the item, you spotted a boat! You quickly jumped inside and started "
                                    "to sail throung the deep water. With every motion of your paddles, the echo spread "
                                    "for miles around. After some time, you reached the shore. You can head to the right "
                                    "or to the left.")
@@ -327,7 +324,7 @@ maze_l3.set_text_after_loot(maze_l3_text_after_loot)
 # Locations lvl 4
 ravine_l4_text_before_loot = ("Finally, a fresh air! You put your head up and see a sky! It is so high up. What is "
                               "far more displeasing, however, is that the only way further is blocked by a huge "
-                              "ravine. You search for a way through that and accidentally found a hidden stash. Lets "
+                              "ravine. You searched for a way through that and accidentally found a hidden stash. Lets "
                               "see what is inside!")
 
 ravine_l4_text_after_loot = ("After grabbing an item, you continue your search and soon you see 2 paths down. "
@@ -435,11 +432,11 @@ square_l7_text_before_loot = ("It seems like long time ago this place was a cent
 
 square_l7_text_after_loot = ("After picking the item up, you went deeper, until you came across a fork. Where to go next?")
 
-graveyard_l7_text_before_loot = ("It is just a usual graveyard, nothig special... except it was built deep underground "
+graveyard_l7_text_before_loot = ("It is just like a usual graveyard, nothig special... except it was built deep underground "
                                  "in a giant abandoned city. A beautiful mausoleum stands in the centre of graveyard. "
                                  "You decided to explore it. Big stone statues and vases are decorating inside. It "
                                  "seems like havok was everywhere except this place. You see a big coffin in a centre "
-                                 "of a room with a couple of items on it.")
+                                 "of the mausoleum with a couple of items on it.")
 
 graveyard_l7_text_after_loot = ("After grabbing an item, you went for a deeper exploration of mausoleum. In the back room "
                                 "you have found 2 holes in a wall. Which one do you pick?")
@@ -463,14 +460,14 @@ catacombs_l8_text_after_loot = ("In that room, you see a tunnel on your left. It
 
 minotaur_labyrinth_l8_text_before_loot = ("'Brace yourself! You have entered the MAZE!' That is what was carved at the entrance. "
                                           "It seems like you saw it somewhere before... You started to go deeper into the maze, "
-                                          "but the path you choose seem to be leading you nowhere. Suddenly you heard the "
+                                          "but the path you choose seem to be leading you nowhere. Suddenly you heard a "
                                           "drawn-out cry of either a man or a bull. It can't be! A minotaur! You started to "
                                           "run as fast as you can, but the end was nowhere near. Gasping for breath, you "
-                                          "finally stumbled to the half-opened door at the end of a maze. You entered and saw a "
+                                          "finally stumbled to a half-opened door at the end of a maze. You entered it and saw a "
                                           "chest in the middle of a room. You need to run, but you cant resist the desire "
                                           "to take something from it! You opened the chest.")
 
-minotaur_labyrinth_l8_text_after_loot = ("Such precious expensive item should not lie here! You grab it and ran past the escape "
+minotaur_labyrinth_l8_text_after_loot = ("Such precious and expensive item should not lie here! You grab it and ran past the escape "
                                          "door. After a long tunel, you found yourself on a crossroad. The path on the left is "
                                          "just like the path on the right.")
 
@@ -519,22 +516,14 @@ escape_elevator_l9.set_text_after_loot(escape_elevator_l9_text_after_loot)
 dragon_test_l10_text_before_loot = ("You are getting higher and higher. Fresh air filled the space around you. After "
                                     "a long time in deep caverns, you are finnaly coming back to see the sky once again. "
                                     "After a long climb you found yourself in a small deepening in the rock. It seems "
-                                    "like it is a nest. There are a lot of bones of pray and shell from eggs. A bunch "
-                                    "of them are lying in the nest itself, but no bird around. You see a couple of items "
-                                    "next to pile of bones.")
+                                    "like it is a nest. There are a lot of bones of prey and egg's shell. A bunch "
+                                    "of eggs are lying in the nest itself, but  there is no bird around. You see a couple of items "
+                                    "next to a pile of bones.")
 
-dragon_test_l10_text_after_loot = ("Your bag feels full of precious items. There are a lot of them here. You are going "
+dragon_test_l10_text_after_loot = ("Your bag is full with precious items. There are a lot of them in here. You are going "
                                    "to make a fortune by selling them in local town. You need to check how to escape "
                                    "that nest and then you are a ready to live your life like a rich nobleman. You "
                                    "spotted a path which leads to a base of a mountain. You started to go down.")
 
 dragon_test_l10.set_text_before_loot(dragon_test_l10_text_before_loot) 
 dragon_test_l10.set_text_after_loot(dragon_test_l10_text_after_loot)
-
-
-
-
-
-
-
-
